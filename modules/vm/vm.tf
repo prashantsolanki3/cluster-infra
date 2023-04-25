@@ -82,8 +82,6 @@ resource "null_resource" "git_clone" {
   provisioner "local-exec" {
     command = <<EOT
     git clone ${var.dots_ansible_repo} .dots/${var.module_name}_ansible
-    cd .dots/${var.module_name}_ansible
-    git checkout ${var.module_name}
     EOT
   }
 }
@@ -92,6 +90,6 @@ resource "null_resource" "ansible" {
   depends_on = [null_resource.git_clone, local_file.ansible_hosts, local_file.host_vars, proxmox_vm_qemu.dev]
   # Run Ansible Playbook
   provisioner "local-exec" {
-    command = "cd ./.dots && ansible-playbook -i ${var.module_name}_hosts ${var.module_name}_ansible/ubuntu.yml"
+    command = "cd ./.dots && ansible-playbook -i ${var.module_name}_hosts ${var.module_name}_ansible/${var.module_name}.yml"
   }
 }
