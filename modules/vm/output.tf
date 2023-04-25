@@ -38,14 +38,14 @@ resource "local_file" "host_vars" {
   filename = "./.dots/${var.module_name}_host_vars.yaml"
 }
 
-resource "local_file" "cleanup" {
-  # Cleanup Script
-  content = templatefile("${path.module}/templates/cleanup.tpl",
-    {
-      vars = {
-        "module_name" = var.module_name
-      }
-    }
-  )
-  filename = "./scripts/${var.module_name}_cleanup.sh"
-}
+# resource "local_file" "cleanup" {
+#   # Cleanup Script
+#   content = templatefile("${path.module}/templates/cleanup.tpl",
+#     {
+#       vars = {
+#         "module_name" = var.module_name
+#       }
+#     }
+#   )
+#   filename = "./scripts/${var.module_name}_cleanup.sh"
+# }
