@@ -42,6 +42,30 @@ module "bootstrap" {
   glusterfs_server                = var.glusterfs_server
 }
 
+
+module "media" {
+  source                          = "./modules/vm"
+  module_name                     = "media"
+  vm_id                           = var.media_vm_id
+  target_node                     = var.target_nodes[0]
+  public_key_file                 = var.media_public_key_file
+  private_key_file                = var.media_private_key_file
+  template                        = var.media_template
+  user                            = var.media_user
+  cpu_count                       = var.media_cpu_count
+  memory                          = var.media_memory
+  hostname                        = var.media_hostname
+  ipv4_gateway                    = var.media_ipv4_gateway
+  ipv4                            = var.media_ipv4
+  ipv4_data                       = var.media_ipv4_data
+  disk_size                       = var.media_disk_size
+  disk_storage                    = var.media_disk_storage
+  dots_ansible_repo               = var.media_ansible_repo
+  glusterfs_mounts                = var.media_glusterfs_mounts
+  glusterfs_server                = var.glusterfs_server
+}
+
+
 # TODO: Get this working
 resource "null_resource" "cleanup" {
   depends_on = [

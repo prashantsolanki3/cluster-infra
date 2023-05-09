@@ -194,3 +194,92 @@ variable "bootstrap_ansible_repo" {
   type = string
   default = "https://github.com/prashantsolanki3/dots.git"
 }
+
+####################
+### Media VM Config
+
+variable "media_glusterfs_mounts" {
+  description = "GlusterFS mounts"
+  type        = list(string)
+}
+
+variable "media_vm_id" {
+  description = "Proxmox vm id"
+  type        = string
+}
+
+variable "media_public_key_file" {
+  description = "public_key"
+  type        = string
+  default     = "~/.ssh/id_rsa.pub"
+}
+
+variable "media_private_key_file" {
+  description = "private_key_file"
+  type        = string
+  default     = "~/.ssh/id_rsa"
+}
+
+variable "media_template" {
+  description = "Template Name"
+  type        = string
+  default     = "U2004-DOCKER-TEMPLATE"
+}
+
+variable "media_user" {
+  description = "Username"
+  type        = string
+}
+
+variable "media_cpu_count" {
+  description = "cpu_count"
+  type        = number
+  default     = 4
+}
+
+variable "media_memory" {
+  description = "Memory"
+  type        = number
+  default     = 4096
+}
+
+variable "media_hostname" {
+  description = "Hostname"
+  type        = string
+  default     = "dev-box"
+}
+
+variable "media_ipv4_gateway" {
+  description = "Default Gateway"
+  type        = string
+}
+
+variable "media_ipv4" {
+  description = "The ipv4"
+  type        = string
+  default     = "10.2.21.12"
+}
+
+variable "media_ipv4_data" {
+  description = "The ipv4 data network"
+  type        = string
+  default     = "10.2.21.12"
+}
+
+variable "media_disk_size" {
+  description = "Disk size"
+  type        = string
+  default     = "32G"
+}
+
+variable "media_disk_storage" {
+  description = "storage location"
+  type        = string
+  default     = "local-lvm"
+}
+
+variable "media_ansible_repo" {
+  description = "Point to you ansible based dot repo"
+  type = string
+  default = "https://github.com/prashantsolanki3/dots.git"
+}
