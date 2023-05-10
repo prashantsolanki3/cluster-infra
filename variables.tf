@@ -1,3 +1,7 @@
+#####################
+### Common Config ###
+#####################
+
 variable "pm_api_token_id" {
   description = "PM_API_TOKEN_ID"
   type        = string
@@ -17,6 +21,15 @@ variable "target_nodes" {
   description = "TARGET_NODES"
   type        = list(string)
 }
+
+variable "glusterfs_server" {
+  description = "Glusterfs server"
+  type        = string
+}
+
+#####################
+### Playground VM ###
+#####################
 
 variable "playground_vm_id" {
   description = "Proxmox vm id"
@@ -99,15 +112,23 @@ variable "playground_ansible_repo" {
   default = "https://github.com/prashantsolanki3/dots.git"
 }
 
-variable "glusterfs_server" {
-  description = "Glusterfs server"
-  type        = string
-}
-
 variable "playground_glusterfs_mounts" {
   description = "GlusterFS mounts"
   type        = list(string)
 }
+
+
+variable "playground_config_files" {
+  description = "List of config files for Playground VM"
+  type = list(object({
+    source_path      = string
+    destination_path = string
+  }))
+}
+
+#####################
+##### Bootstrap #####
+#####################
 
 variable "bootstrap_glusterfs_mounts" {
   description = "GlusterFS mounts"
@@ -195,8 +216,17 @@ variable "bootstrap_ansible_repo" {
   default = "https://github.com/prashantsolanki3/dots.git"
 }
 
-####################
-### Media VM Config
+variable "bootstrap_config_files" {
+  description = "List of config files for Bootstrap VM"
+  type = list(object({
+    source_path      = string
+    destination_path = string
+  }))
+}
+
+#####################
+##### Media VM ######
+#####################
 
 variable "media_glusterfs_mounts" {
   description = "GlusterFS mounts"
@@ -282,4 +312,12 @@ variable "media_ansible_repo" {
   description = "Point to you ansible based dot repo"
   type = string
   default = "https://github.com/prashantsolanki3/dots.git"
+}
+
+variable "media_config_files" {
+  description = "List of config files for Media VM"
+  type = list(object({
+    source_path      = string
+    destination_path = string
+  }))
 }

@@ -98,3 +98,11 @@ variable "glusterfs_mounts" {
   description = "GlusterFS mounts"
   type        = list(string)
 }
+
+variable "config_files" {
+  description = "List of config files for the target VM"
+  type = list(object({
+    source_path      = string
+    destination_path = string
+  }))
+}

@@ -18,6 +18,7 @@ module "playground" {
   dots_ansible_repo               = var.playground_ansible_repo
   glusterfs_mounts                = var.playground_glusterfs_mounts
   glusterfs_server                = var.glusterfs_server
+  config_files                    = var.playground_config_files
 }
 
 module "bootstrap" {
@@ -40,6 +41,7 @@ module "bootstrap" {
   dots_ansible_repo               = var.bootstrap_ansible_repo
   glusterfs_mounts                = var.bootstrap_glusterfs_mounts
   glusterfs_server                = var.glusterfs_server
+  config_files                    = var.bootstrap_config_files
 }
 
 
@@ -63,6 +65,7 @@ module "media" {
   dots_ansible_repo               = var.media_ansible_repo
   glusterfs_mounts                = var.media_glusterfs_mounts
   glusterfs_server                = var.glusterfs_server
+  config_files                    = var.media_config_files
 }
 
 

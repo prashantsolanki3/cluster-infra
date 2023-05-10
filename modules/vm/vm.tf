@@ -93,3 +93,22 @@ resource "null_resource" "ansible" {
     command = "cd ./.dots && ansible-playbook -i ${var.module_name}_hosts ${var.module_name}_ansible/${var.module_name}.yml"
   }
 }
+
+resource "null_resource" "copy_config_files" {
+  count = length(var.config_files)
+
+  triggers = {
+    file_exists = fileexists(var.config_files[count.index].source_path)
+  }
+  
+  provisioner "local-exec" {
+    command = "cp ${var.config_files[count.index].source_path} ${var.config_files[count.index].destination_path}"
+  }
+  # provisioner "file" {
+  #   source      = var.config_files[count.index].source_path
+  #   destination = var.config_files[count.index].destination_path
+  # }
+
+  # depends_on = [null_resource.git_clone, local_file.ansible_hosts,
+  #  local_file.host_vars, proxmox_vm_qemu.dev]
+}

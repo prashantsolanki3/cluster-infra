@@ -46,3 +46,5 @@ terraform.rc
 # End of https://www.toptal.com/developers/gitignore/api/terraform
 
 ansible/inventory/*
+
+ansible-hms-docker-config.yml
