@@ -93,7 +93,19 @@ resource "null_resource" "ansible" {
     command = <<EOT
     rm -rf .dots/${var.module_name}_ansible
     git clone --depth 1 ${var.dots_ansible_repo} .dots/${var.module_name}_ansible
+    # Remove .git folder
+    rm -rf .dots/${var.module_name}_ansible/.git
     cd ./.dots && ansible-playbook -i ${var.module_name}_hosts ${var.module_name}_ansible/${var.module_name}.yml
+    EOT
+  }
+}
+
+resource "null_resource" "ansible_cleanup" {
+  depends_on = [null_resource.ansible]
+  # Run Ansible Playbook
+  provisioner "local-exec" {
+    command = <<EOT
+    rm -rf .dots/${var.module_name}_ansible
     EOT
   }
 }
@@ -104,7 +116,10 @@ resource "null_resource" "git_clone_hms" {
   # Clone Dots Ansible Project
   provisioner "local-exec" {
     command = <<EOT
-    rm -rf .dots/ansible-hms-docker && git clone --depth 1 https://github.com/prashantsolanki3/ansible-hms-docker .dots/ansible-hms-docker
+    rm -rf .dots/ansible-hms-docker 
+    git clone --depth 1 https://github.com/prashantsolanki3/ansible-hms-docker .dots/ansible-hms-docker
+    # Remove .git folder
+    rm -rf .dots/ansible-hms-docker/.git
     EOT
   }
 }
@@ -132,6 +147,16 @@ resource "null_resource" "ansible_hms_docker" {
   provisioner "local-exec" {
     command = <<EOT
     cd ./.dots && ansible-playbook -i ${var.module_name}_hosts ansible-hms-docker/hms-docker.yml
+    EOT
+  }
+}
+
+resource "null_resource" "ansible_hms_docker_cleanup" {
+  depends_on = [null_resource.ansible_hms_docker]
+  # Run Ansible Playbook
+  provisioner "local-exec" {
+    command = <<EOT
+    rm -rf .dots/${var.module_name}_ansible
     EOT
   }
 }
