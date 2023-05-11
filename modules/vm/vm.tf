@@ -11,7 +11,7 @@ resource "proxmox_vm_qemu" "dev" {
   memory      = var.memory
   scsihw      = "virtio-scsi-pci"
   bootdisk    = "scsi0"
-  depends_on  = [null_resource.git_clone, local_file.module_info]
+  depends_on  = [local_file.module_info]
 
   disk {
     slot     = 0
@@ -77,20 +77,35 @@ resource "proxmox_vm_qemu" "dev" {
   }
 }
 
-resource "null_resource" "git_clone" {
-  # Clone Dots Ansible Project
+# resource "null_resource" "git_clone" {
+#   # Clone Dots Ansible Project
+#   provisioner "local-exec" {
+#     command = <<EOT
+#     git clone ${var.dots_ansible_repo} .dots/${var.module_name}_ansible
+#     EOT
+#   }
+# }
+
+resource "null_resource" "ansible" {
+  depends_on = [local_file.ansible_hosts, local_file.host_vars, proxmox_vm_qemu.dev]
+  # Run Ansible Playbook
   provisioner "local-exec" {
     command = <<EOT
-    git clone ${var.dots_ansible_repo} .dots/${var.module_name}_ansible
+    rm -rf .dots/${var.module_name}_ansible
+    git clone --depth 1 ${var.dots_ansible_repo} .dots/${var.module_name}_ansible
+    cd ./.dots && ansible-playbook -i ${var.module_name}_hosts ${var.module_name}_ansible/${var.module_name}.yml
     EOT
   }
 }
 
-resource "null_resource" "ansible" {
-  depends_on = [null_resource.git_clone, local_file.ansible_hosts, local_file.host_vars, proxmox_vm_qemu.dev]
-  # Run Ansible Playbook
+# Created a resource to clone the repo because configuration
+# files are copied to the repo
+resource "null_resource" "git_clone_hms" {
+  # Clone Dots Ansible Project
   provisioner "local-exec" {
-    command = "cd ./.dots && ansible-playbook -i ${var.module_name}_hosts ${var.module_name}_ansible/${var.module_name}.yml"
+    command = <<EOT
+    rm -rf .dots/ansible-hms-docker && git clone --depth 1 https://github.com/prashantsolanki3/ansible-hms-docker .dots/ansible-hms-docker
+    EOT
   }
 }
 
@@ -104,11 +119,19 @@ resource "null_resource" "copy_config_files" {
   provisioner "local-exec" {
     command = "cp ${var.config_files[count.index].source_path} ${var.config_files[count.index].destination_path}"
   }
-  # provisioner "file" {
-  #   source      = var.config_files[count.index].source_path
-  #   destination = var.config_files[count.index].destination_path
-  # }
 
-  # depends_on = [null_resource.git_clone, local_file.ansible_hosts,
-  #  local_file.host_vars, proxmox_vm_qemu.dev]
+  depends_on = [null_resource.git_clone_hms, null_resource.ansible, local_file.ansible_hosts,
+   local_file.host_vars, proxmox_vm_qemu.dev]
+}
+
+
+resource "null_resource" "ansible_hms_docker" {
+  count = var.module_name == "media" ? 1 : 0
+  depends_on = [null_resource.copy_config_files]
+  # Run Ansible Playbook
+  provisioner "local-exec" {
+    command = <<EOT
+    cd ./.dots && ansible-playbook -i ${var.module_name}_hosts ansible-hms-docker/hms-docker.yml
+    EOT
+  }
 }
