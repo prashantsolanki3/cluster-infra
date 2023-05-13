@@ -1,3 +1,9 @@
+variable "env" {
+  description = "Environment - dev, live. Default is dev"
+  default     = "dev"
+  type        = string
+}
+
 variable "target_node" {
   description = "TARGET_NODE"
   type        = string

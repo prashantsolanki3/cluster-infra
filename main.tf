@@ -1,4 +1,5 @@
 module "playground" {
+  env                             = var.env
   source                          = "./modules/vm"
   module_name                     = "playground"
   vm_id                           = var.playground_vm_id
@@ -22,6 +23,7 @@ module "playground" {
 }
 
 module "bootstrap" {
+  env                             = var.env
   source                          = "./modules/vm"
   module_name                     = "bootstrap"
   vm_id                           = var.bootstrap_vm_id
@@ -46,6 +48,7 @@ module "bootstrap" {
 
 
 module "media" {
+  env                             = var.env
   source                          = "./modules/vm"
   module_name                     = "media"
   vm_id                           = var.media_vm_id

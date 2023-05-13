@@ -1,6 +1,11 @@
 #####################
 ### Common Config ###
 #####################
+variable "env" {
+  description = "Environment - dev, live. Default is dev"
+  default     = "dev"
+  type        = string
+}
 
 variable "pm_api_token_id" {
   description = "PM_API_TOKEN_ID"

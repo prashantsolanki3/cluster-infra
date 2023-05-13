@@ -27,6 +27,7 @@ resource "local_file" "host_vars" {
   content = templatefile("${path.module}/templates/simple-yaml.tpl",
     {
       vars = {
+        "env" = var.env,
         "host_username" = var.user,
         "authorized_keys" = file(var.public_key_file),
         "glusterfs_mounts" = join(",", var.glusterfs_mounts),
