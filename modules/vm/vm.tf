@@ -113,6 +113,7 @@ resource "null_resource" "ansible_cleanup" {
 # Created a resource to clone the repo because configuration
 # files are copied to the repo
 resource "null_resource" "git_clone_hms" {
+  count = var.module_name == "media" ? 1 : 0
   # Clone Dots Ansible Project
   provisioner "local-exec" {
     command = <<EOT
