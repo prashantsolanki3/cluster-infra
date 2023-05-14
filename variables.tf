@@ -36,6 +36,12 @@ variable "glusterfs_server" {
 ### Playground VM ###
 #####################
 
+variable "playground_module_name" {
+  description = "Playground module name"
+  type        = string
+  default     = "playground"
+}
+
 variable "playground_vm_id" {
   description = "Proxmox vm id"
   type        = string
@@ -135,6 +141,12 @@ variable "playground_config_files" {
 ##### Bootstrap #####
 #####################
 
+variable "bootstrap_module_name" {
+  description = "Bootstrap module name"
+  type        = string
+  default     = "bootstrap"
+}
+
 variable "bootstrap_glusterfs_mounts" {
   description = "GlusterFS mounts"
   type        = list(string)
@@ -232,6 +244,12 @@ variable "bootstrap_config_files" {
 #####################
 ##### Media VM ######
 #####################
+
+variable "media_module_name" {
+  description = "Media module name"
+  type        = string
+  default     = "media"
+}
 
 variable "media_glusterfs_mounts" {
   description = "GlusterFS mounts"

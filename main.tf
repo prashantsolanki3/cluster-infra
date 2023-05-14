@@ -1,7 +1,15 @@
+
+locals {
+  playground_hostname ="${var.env}-${var.playground_hostname}"
+  bootstrap_hostname ="${var.env}-${var.bootstrap_hostname}"
+  media_hostname ="${var.env}-${var.media_hostname}"
+}
+
+
 module "playground" {
   env                             = var.env
   source                          = "./modules/vm"
-  module_name                     = "playground"
+  module_name                     = var.playground_module_name
   vm_id                           = var.playground_vm_id
   target_node                     = var.target_nodes[0]
   public_key_file                 = var.playground_public_key_file
@@ -10,7 +18,7 @@ module "playground" {
   user                            = var.playground_user
   cpu_count                       = var.playground_cpu_count
   memory                          = var.playground_memory
-  hostname                        = var.playground_hostname
+  hostname                        = local.playground_hostname
   ipv4_gateway                    = var.playground_ipv4_gateway
   ipv4                            = var.playground_ipv4
   ipv4_data                       = var.playground_ipv4_data
@@ -25,7 +33,7 @@ module "playground" {
 module "bootstrap" {
   env                             = var.env
   source                          = "./modules/vm"
-  module_name                     = "bootstrap"
+  module_name                     = var.bootstrap_module_name
   vm_id                           = var.bootstrap_vm_id
   target_node                     = var.target_nodes[0]
   public_key_file                 = var.bootstrap_public_key_file
@@ -34,7 +42,7 @@ module "bootstrap" {
   user                            = var.bootstrap_user
   cpu_count                       = var.bootstrap_cpu_count
   memory                          = var.bootstrap_memory
-  hostname                        = var.bootstrap_hostname
+  hostname                        = local.bootstrap_hostname
   ipv4_gateway                    = var.bootstrap_ipv4_gateway
   ipv4                            = var.bootstrap_ipv4
   ipv4_data                       = var.bootstrap_ipv4_data
@@ -50,7 +58,7 @@ module "bootstrap" {
 module "media" {
   env                             = var.env
   source                          = "./modules/vm"
-  module_name                     = "media"
+  module_name                     = var.media_module_name
   vm_id                           = var.media_vm_id
   target_node                     = var.target_nodes[0]
   public_key_file                 = var.media_public_key_file
@@ -59,7 +67,7 @@ module "media" {
   user                            = var.media_user
   cpu_count                       = var.media_cpu_count
   memory                          = var.media_memory
-  hostname                        = var.media_hostname
+  hostname                        = local.media_hostname
   ipv4_gateway                    = var.media_ipv4_gateway
   ipv4                            = var.media_ipv4
   ipv4_data                       = var.media_ipv4_data
